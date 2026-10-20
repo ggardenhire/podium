@@ -153,3 +153,7 @@ docker/
 Dockerfile              # thin runner image
 docker-compose.yml      # example multi-site configuration
 ```
+
+## License
+
+[MIT](LICENSE) © 2026 Garret Gardenhire
