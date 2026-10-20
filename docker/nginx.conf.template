@@ -22,34 +22,7 @@ http {
     text/plain text/css application/javascript application/json
     image/svg+xml application/xml font/woff2;
 
-  server {
-    listen ${PORT};
-    server_name _;
-    root /usr/share/nginx/html;
-    index index.html;
-
-    # Sensible defensive headers for a static site behind a reverse proxy.
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-
-    # Vite emits content-hashed filenames into /assets — cache them forever.
-    location /assets/ {
-      try_files $uri =404;
-      expires 1y;
-      add_header Cache-Control "public, immutable";
-    }
-
-    # Single-page app: unknown routes fall back to index.html.
-    location / {
-      try_files $uri $uri/ /index.html;
-    }
-
-    # Lightweight health endpoint for the reverse proxy / unraid.
-    location = /healthz {
-      access_log off;
-      add_header Content-Type text/plain;
-      return 200 "ok\n";
-    }
-  }
+  # One server block per site is generated into http.d at runtime by the
+  # entrypoint (see docker/site.conf.template), each listening on its own port.
+  include /etc/nginx/http.d/*.conf;
 }
