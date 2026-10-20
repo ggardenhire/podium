@@ -5,23 +5,33 @@ services:
     container_name: podium
     restart: unless-stopped
     ports:
-      # host:container — point your reverse proxy at the host port.
-      # The container listens on $PORT (default 80).
-      - "8080:80"
+      # Publish one host:container port per site. The container ports must
+      # match the "port" values in SITES below.
+      - "8080:8080"
+      - "8081:8081"
     environment:
-      # REPO_URL is required. Public repo → HTTPS clone needs no credentials.
-      # For a private repo, use a token URL:
+      # SITES: a JSON array of sites. One container serves them all, each on
+      # its own container port. Per-object fields:
+      #   repo   (required)  GitHub repo to clone and serve
+      #   port   (required)  container port to listen on (must be unique)
+      #   branch (default "main")
+      #   build  (default "npm ci --no-audit --no-fund && npm run build";
+      #           use "" for a raw static repo with no build step)
+      #   output (default "dist"; use "." for a raw static repo)
+      #
+      # For a private repo, put a token in the URL:
       #   https://<user>:<token>@github.com/you/repo.git
-      REPO_URL: "https://github.com/<you>/<repo>.git"
-      REPO_BRANCH: "main"
-      POLL_INTERVAL: "300" # seconds between update checks
-      # BUILD_CMD defaults to "npm ci --no-audit --no-fund && npm run build".
-      # OUTPUT_DIR defaults to "dist". For a raw static repo (no build step):
-      #   BUILD_CMD: ""
-      #   OUTPUT_DIR: "."
-      # PORT defaults to 80 — change it and the mapping above to serve elsewhere.
+      SITES: >-
+        [
+          {"repo":"https://github.com/you/vite-app.git","port":8080,
+           "branch":"main"},
+          {"repo":"https://github.com/you/static-site.git","port":8081,
+           "build":"","output":"."}
+        ]
+      POLL_INTERVAL: "300" # seconds between update checks (applies to all sites)
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:80/healthz"]
+      # Probes the first site's port (written to /run/podium/health-port).
+      test: ["CMD-SHELL", "curl -fsS http://localhost:$(cat /run/podium/health-port)/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3
