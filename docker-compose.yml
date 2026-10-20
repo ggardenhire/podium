@@ -1,0 +1,28 @@
+services:
+  podium:
+    build: .
+    image: podium:latest
+    container_name: podium
+    restart: unless-stopped
+    ports:
+      # host:container — point your reverse proxy at the host port.
+      # The container listens on $PORT (default 80).
+      - "8080:80"
+    environment:
+      # REPO_URL is required. Public repo → HTTPS clone needs no credentials.
+      # For a private repo, use a token URL:
+      #   https://<user>:<token>@github.com/you/repo.git
+      REPO_URL: "https://github.com/<you>/<repo>.git"
+      REPO_BRANCH: "main"
+      POLL_INTERVAL: "300" # seconds between update checks
+      # BUILD_CMD defaults to "npm ci --no-audit --no-fund && npm run build".
+      # OUTPUT_DIR defaults to "dist". For a raw static repo (no build step):
+      #   BUILD_CMD: ""
+      #   OUTPUT_DIR: "."
+      # PORT defaults to 80 — change it and the mapping above to serve elsewhere.
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:80/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
