@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Podium</Name>
+  <Repository>ggarden/podium:latest</Repository>
+  <Registry>https://hub.docker.com/r/ggarden/podium</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ggardenhire/podium/issues</Support>
+  <Project>https://github.com/ggardenhire/podium</Project>
+  <Overview>A thin, self-updating static-site runner. Point it at one or more GitHub repos and it will clone, build, and serve each one on its own port, then poll every branch and rebuild whenever you push — no image rebuilds, no manual deploys. A failed build is logged and the previous version stays live.&#xD;&#xD;Configure the SITES variable with a JSON array of site objects, one per repo: {"repo":"https://github.com/you/app.git","port":8080}. Each site needs a matching published port (add more via "Add another Path, Port, Variable, Label or Device"). For a raw static repo with no build step, set "build":"" and "output":".". For a private repo, embed a token in the URL: https://&lt;user&gt;:&lt;token&gt;@github.com/you/repo.git&#xD;&#xD;See the project page for full configuration details.</Overview>
+  <Category>Network:Web Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8080]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/ggardenhire/podium/main/unraid/podium.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/ggardenhire/podium/main/unraid/podium-icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="Site 1 Port" Target="8080" Default="8080" Mode="tcp" Description="Host port for the first site. Must match a port value inside SITES. Add one Port entry per site." Type="Port" Display="always" Required="true" Mask="false">8080</Config>
+  <Config Name="SITES" Target="SITES" Default="[{&quot;repo&quot;:&quot;https://github.com/you/app.git&quot;,&quot;port&quot;:8080}]" Mode="" Description="JSON array of sites to serve. Per object: repo (required), port (required, unique), branch (default main), build (default 'npm ci --no-audit --no-fund &amp;&amp; npm run build'; use '' for a raw static repo), output (default dist; use '.' for a raw static repo)." Type="Variable" Display="always" Required="true" Mask="false">[{"repo":"https://github.com/you/app.git","port":8080}]</Config>
+  <Config Name="POLL_INTERVAL" Target="POLL_INTERVAL" Default="300" Mode="" Description="Seconds between update checks (applies to all sites)." Type="Variable" Display="always" Required="false" Mask="false">300</Config>
+</Container>

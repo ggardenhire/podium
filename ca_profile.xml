@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Repository profile shown in Community Applications. Must stay in the repo
+  root and must have a non-empty <Profile>. Optional: <Forum> (Unraid forum
+  support thread), <DonateLink>, <DonateText>.
+-->
+<CommunityApplications>
+  <Profile>
+    Podium is a thin, self-updating static-site runner in a single container:
+    point it at one or more GitHub repos and it clones, builds, and serves each
+    on its own port, then polls every branch and redeploys whenever you push —
+    no image rebuilds or manual deploys. Tracks upstream closely; it's just
+    nginx + node + git + a watch script. Support is handled via GitHub issues.
+    Maintained by Garret Gardenhire.
+  </Profile>
+  <Icon>https://raw.githubusercontent.com/ggardenhire/podium/main/unraid/podium-icon.png</Icon>
+  <WebPage>https://github.com/ggardenhire/podium</WebPage>
+</CommunityApplications>
