@@ -10,8 +10,10 @@
     point it at one or more GitHub repos and it clones, builds, and serves each
     on its own port, then polls every branch and redeploys whenever you push —
     no image rebuilds or manual deploys. Tracks upstream closely; it's just
-    nginx + node + git + a watch script. Support is handled via GitHub issues.
-    Maintained by Garret Gardenhire.
+    nginx + node + git + a watch script.
+
+    This repository maintains a single container: podium. For help, bug reports, or
+    feature requests, open an issue at https://github.com/ggardenhire/podium/issues.
   </Profile>
   <Icon>https://raw.githubusercontent.com/ggardenhire/podium/main/unraid/podium-icon.png</Icon>
   <WebPage>https://github.com/ggardenhire/podium</WebPage>
